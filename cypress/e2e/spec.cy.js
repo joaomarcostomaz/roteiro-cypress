@@ -68,4 +68,63 @@ describe('TODOMvc App', () => {
       .children()
       .should('have.length', 2);
   });
+
+  it('Marca todas as tarefas como completas', () => {
+    cy.visit('');
+
+    cy.get('[data-cy=todo-input]')
+      .type('Tarefa 1{enter}')
+      .type('Tarefa 2{enter}')
+
+    cy.get('.todo-list li')
+      .should('have.length', 2);
+
+    cy.get('.toggle-all-label')
+      .click();
+    
+    cy.get('.clear-completed')
+      .click();
+
+    cy.get('.todo-list li')
+      .should('have.length', 0);
+  });
+
+  it('Edita uma tarefa', () => {
+    cy.visit('');
+
+    cy.get('.new-todo')
+      .type('TP2 de Engenharia de Software{enter}');
+
+    cy.get('.todo-list li')
+      .dblclick();
+
+    cy.get('.todo-list li .edit')
+      .clear()
+      .type('Tarefa editada{enter}');
+
+    cy.get('.todo-list li')
+      .first()
+      .should('have.text', 'Tarefa editada');
+  });
+
+  it('Deleta todas as tarefas marcadas como completas', () => {
+    cy.visit('');
+
+    cy.get('.new-todo')
+      .type('TP3 de Engenharia de Software{enter}')
+      .type('Prova de Engenharia de Software{enter}');
+
+    cy.get('.todo-list li')
+      .should('have.length', 2);
+
+    cy.get('.toggle-all-label')
+      .click();
+
+    cy.get('.clear-completed')
+      .click();
+
+    cy.get('.todo-list li')
+      .should('have.length', 0);
+  });
+
 });
